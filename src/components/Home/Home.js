@@ -1,14 +1,23 @@
 import React, { useState } from "react";
 import { Button, Col, Container, Row } from "react-bootstrap";
 import { FaArrowRight } from "react-icons/fa";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useNavigate } from "react-router-dom";
 import TourPlaces from "../TourPlaces/TourPlaces";
 
 const Home = () => {
   const tourData = useLoaderData();
   // console.log(tourData);
-  const [tourInfo, setTourInfo] = useState({});
-  console.log(tourInfo);
+  const [tourInfo, setTourInfo] = useState({ id: 1 });
+  //   console.log(tourInfo);
+  const navigate = useNavigate();
+
+  const handleBooking = (id) => {
+    if (id) {
+      console.log("clicked id:", id);
+      navigate(`/places/${id}`);
+    }
+  };
+
   return (
     <div
       style={{
@@ -31,20 +40,20 @@ const Home = () => {
             <h1>{tourInfo.name ? tourInfo.name : <span>Sundarban</span>}</h1>
             <p>
               {tourInfo.description ? (
-                tourInfo.description
+                tourInfo.description.slice(0, 200)
               ) : (
                 <span>
                   Sundarban is a town on the southeast coast of Bangladesh. It’s
                   known for its very long, sandy beachfront, stretching from Sea
                   Beach in the north to Kolatoli Beach in the south. Aggameda
-                  Khyang monastery is home to bronze statues and centuries-old
-                  Buddhist manuscripts. South of town, the tropical rainforest
-                  of Himchari National Park has waterfalls and many birds.
-                  North, sea turtles breed on nearby Sonadia Island.
+                  Khyang monas
                 </span>
               )}
             </p>
-            <Button variant="warning">
+            <Button
+              onClick={() => handleBooking(tourInfo.id)}
+              variant="warning"
+            >
               <span className="me-2">Booking</span>
               <FaArrowRight></FaArrowRight>
             </Button>
