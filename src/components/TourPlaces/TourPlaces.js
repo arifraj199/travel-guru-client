@@ -1,12 +1,9 @@
-import React, { useState } from "react";
+import React from "react";
 import { Col, Row } from "react-bootstrap";
 
 const TourPlaces = ({ tour, setTourInfo }) => {
   const { picture, name } = tour;
-
-  const [change, setChange] = useState([]);
   const handlePlaces = (tour) => {
-    setChange(tour);
     setTourInfo(tour);
   };
   return (
