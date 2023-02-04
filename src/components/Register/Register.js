@@ -1,12 +1,43 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Button, Form } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { FaGithub, FaGoogle } from "react-icons/fa";
+import { AuthContext } from "../../Contexts/UserContexts/UserContexts";
+import { toast } from "react-hot-toast";
 
 const Register = () => {
+  const [accepted, setAccepted] = useState(false);
+  const { createUser } = useContext(AuthContext);
+
+  const handleForm = (event) => {
+    event.preventDefault();
+    const form = event.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    const confirmPassword = form.confirm.value;
+
+    if (password !== confirmPassword) {
+      toast.error("Password did not match");
+      return;
+    } else {
+      createUser(email, password)
+        .then((res) => {
+          console.log(res.user);
+          toast.success("User Create Successfully");
+          form.reset();
+        })
+        .catch((error) => toast.error(error.message));
+    }
+  };
+
+  const handleTerms = (event) => {
+    const acceptTerms = event.target.checked;
+    setAccepted(acceptTerms);
+  };
   return (
     <div className="mb-5">
       <Form
+        onSubmit={handleForm}
         style={{ width: "500px", margin: "0 auto" }}
         className=" mt-5 border border-2 p-5 "
       >
@@ -15,6 +46,7 @@ const Register = () => {
           <Form.Control
             type="text"
             placeholder="Full Name"
+            name="name"
             className="border  border-bottom-5 border-top-0 border-start-0 border-end-0 border-dark rounded rounded-0 fw-semibold"
           />
         </Form.Group>
@@ -22,6 +54,7 @@ const Register = () => {
         <Form.Group className="mb-4" controlId="formBasicEmail">
           <Form.Control
             className="border  border-bottom-5 border-top-0 border-start-0 border-end-0 border-dark rounded rounded-0 fw-semibold"
+            name="email"
             type="email"
             placeholder="Email"
           />
@@ -30,6 +63,7 @@ const Register = () => {
         <Form.Group className="mb-4" controlId="formBasicPassword">
           <Form.Control
             className="border  border-bottom-5 border-top-0 border-start-0 border-end-0 border-dark rounded rounded-0 fw-semibold"
+            name="password"
             type="password"
             placeholder="Password"
           />
@@ -38,14 +72,28 @@ const Register = () => {
         <Form.Group className="mb-4" controlId="formBasicConfirm">
           <Form.Control
             className="border  border-bottom-5 border-top-0 border-start-0 border-end-0 border-dark rounded rounded-0 fw-semibold"
+            name="confirm"
             type="password"
             placeholder="Confirm Password"
           />
         </Form.Group>
-        <Form.Group className="mb-3" controlId="formBasicCheckbox">
-          <Form.Check type="checkbox" label="Accept Terms & Conditions" />
+        <Form.Group
+          onClick={handleTerms}
+          className="mb-3"
+          controlId="formBasicCheckbox"
+        >
+          <Form.Check
+            name="checked"
+            type="checkbox"
+            label="Accept Terms & Conditions"
+          />
         </Form.Group>
-        <Button variant="warning" className="w-100 fw-semibold" type="submit">
+        <Button
+          variant="warning"
+          className="w-100 fw-semibold"
+          type="submit"
+          disabled={!accepted}
+        >
           Create An Account
         </Button>
         <div className="text-center mt-2">

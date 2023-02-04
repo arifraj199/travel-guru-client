@@ -5,6 +5,7 @@ import Register from "../components/Register/Register";
 import TourPlaces from "../components/TourPlaces/TourPlaces";
 import VisitPlace from "../components/VisitPlace/VisitPlace";
 import Main from "../layouts/Main";
+import PrivateRoute from "../PrivateRoute/PrivateRoute";
 
 export const router = createBrowserRouter([
   {
@@ -22,8 +23,12 @@ export const router = createBrowserRouter([
       },
       {
         path: "/places/:id",
-        element: <VisitPlace></VisitPlace>,
-        loader: async({ params }) => {
+        element: (
+          <PrivateRoute>
+            <VisitPlace></VisitPlace>
+          </PrivateRoute>
+        ),
+        loader: ({ params }) => {
           return fetch(`http://localhost:5000/places/${params.id}`);
         },
       },
