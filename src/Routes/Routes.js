@@ -15,7 +15,7 @@ export const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
-        loader: () => fetch("http://localhost:5000/places"),
+        loader: () => fetch("https://travel-guru-server-tau-six.vercel.app/places"),
       },
       {
         path: "/",
@@ -29,7 +29,7 @@ export const router = createBrowserRouter([
           </PrivateRoute>
         ),
         loader: ({ params }) => {
-          return fetch(`http://localhost:5000/places/${params.id}`);
+          return fetch(`https://travel-guru-server-tau-six.vercel.app/places/${params.id}`);
         },
       },
       {
