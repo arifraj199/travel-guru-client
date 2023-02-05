@@ -7,7 +7,7 @@ import { toast } from "react-hot-toast";
 
 const Register = () => {
   const [accepted, setAccepted] = useState(false);
-  const { createUser } = useContext(AuthContext);
+  const { createUser, googleLogin, gitHubLogin } = useContext(AuthContext);
 
   const handleForm = (event) => {
     event.preventDefault();
@@ -28,6 +28,21 @@ const Register = () => {
         })
         .catch((error) => toast.error(error.message));
     }
+  };
+
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then(() => {
+        toast.success("Registration Successful");
+      })
+      .catch((error) => toast.error(error.message));
+  };
+  const handleGithubLogin = () => {
+    gitHubLogin()
+      .then(() => {
+        toast.success("Registration Successful");
+      })
+      .catch((error) => toast.error(error.message));
   };
 
   const handleTerms = (event) => {
@@ -112,6 +127,7 @@ const Register = () => {
       </div>
       <div className="text-center ">
         <Button
+          onClick={handleGoogleLogin}
           variant="outline-warning"
           className="text-dark fw-semibold rounded-pill"
         >
@@ -119,6 +135,7 @@ const Register = () => {
           <span className="ms-4">Continue With Google</span>
         </Button>{" "}
         <Button
+          onClick={handleGithubLogin}
           variant="outline-warning"
           className="text-dark fw-semibold rounded-pill"
         >

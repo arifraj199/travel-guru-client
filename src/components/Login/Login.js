@@ -6,7 +6,8 @@ import { AuthContext } from "../../Contexts/UserContexts/UserContexts";
 import { toast } from "react-hot-toast";
 
 const Login = () => {
-  const { signIn, passwordResetEmail } = useContext(AuthContext);
+  const { signIn, passwordResetEmail, googleLogin, gitHubLogin } =
+    useContext(AuthContext);
   const emailRef = useRef("");
   let navigate = useNavigate();
   let location = useLocation();
@@ -28,11 +29,29 @@ const Login = () => {
       .catch((error) => toast.error(error.message));
   };
 
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then(() => {
+        toast.success("Login Successful");
+        navigate(from, { replace: true });
+      })
+      .catch((error) => toast.error(error.message));
+  };
+
+  const handleGithubLogin = () => {
+    gitHubLogin()
+      .then(() => {
+        toast.success("Login Successful");
+        navigate(from, { replace: true });
+      })
+      .catch((error) => toast.error(error.message));
+  };
+
   const handlePasswordReset = () => {
     const email = emailRef.current.value;
     console.log(email);
     passwordResetEmail(email)
-      .then((res) => {
+      .then(() => {
         toast.success("Reset email send");
       })
       .catch((error) => toast.error(error.message));
@@ -95,6 +114,7 @@ const Login = () => {
       </div>
       <div className="text-center ">
         <Button
+          onClick={handleGoogleLogin}
           variant="outline-warning"
           className="text-dark fw-semibold rounded-pill"
         >
@@ -102,6 +122,7 @@ const Login = () => {
           <span className="ms-4">Continue With Google</span>
         </Button>{" "}
         <Button
+          onClick={handleGithubLogin}
           variant="outline-warning"
           className="text-dark fw-semibold rounded-pill"
         >
